@@ -8,3 +8,12 @@ export const toggleTodoSchema = z.object({
   id: z.string().nonempty(),
   done: z.boolean(),
 });
+
+export const updateTodoSchema = z.object({
+  id: z.string().nonempty(),
+  content: z.string().nonempty(),
+});
+
+export const deleteTodoSchema = z.object({
+  id: z.string().nonempty(),
+});

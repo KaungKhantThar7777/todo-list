@@ -7,7 +7,7 @@ type Props = {
 };
 const TodoList = ({ todos }: Props) => {
   return (
-    <ol className="mt-4 flex flex-col ">
+    <ol className="mt-4 flex flex-col gap-2 ">
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}

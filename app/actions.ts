@@ -2,8 +2,8 @@
 import { prisma } from "@/utils/db";
 import { revalidatePath } from "next/cache";
 
-import { TodoForm, ToggleTodo } from "./types";
-import { addFormSchema, toggleTodoSchema } from "./schema";
+import { DeleteTodo, TodoForm, ToggleTodo, UpdateTodo } from "./types";
+import { addFormSchema, deleteTodoSchema, toggleTodoSchema, updateTodoSchema } from "./schema";
 
 export async function createTodo(prevState: any, formData: TodoForm) {
   addFormSchema.parse(formData);
@@ -23,7 +23,6 @@ export async function createTodo(prevState: any, formData: TodoForm) {
 }
 
 export async function toggleTodo(prevState: any, data: ToggleTodo) {
-  console.log({ data });
   toggleTodoSchema.parse(data);
 
   try {
@@ -43,6 +42,53 @@ export async function toggleTodo(prevState: any, data: ToggleTodo) {
   } catch (error) {
     return {
       message: "Failed to toggle todo.",
+    };
+  }
+}
+
+export async function updateTodo(prevState: any, data: UpdateTodo) {
+  updateTodoSchema.parse(data);
+
+  try {
+    const todo = await prisma.todo.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        content: data.content,
+      },
+    });
+
+    revalidatePath("/");
+    return {
+      message: `Update todo ${todo.id}`,
+    };
+  } catch (error) {
+    return {
+      message: "Failed to upate todo.",
+    };
+  }
+}
+
+export async function deleteTodo(prevState: any, formData: FormData) {
+  const data = deleteTodoSchema.parse({
+    id: formData.get("id"),
+  });
+
+  try {
+    const todo = await prisma.todo.delete({
+      where: {
+        id: data.id,
+      },
+    });
+
+    revalidatePath("/");
+    return {
+      message: `Removed todo ${todo.id}`,
+    };
+  } catch (error) {
+    return {
+      message: "Failed to remove todo.",
     };
   }
 }

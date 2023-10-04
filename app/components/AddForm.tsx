@@ -22,7 +22,7 @@ const SubmitButton = () => {
     <button
       disabled={isSubmitting}
       aria-disabled={isSubmitting}
-      className="bg-blue-700 text-white px-4 py-2 rounded-md mt-4   transition-all disabled:text-black disabled:bg-slate-400"
+      className="bg-blue-700 text-white px-4 py-2 rounded-md mt-2   transition-all disabled:text-black disabled:bg-slate-400"
     >
       {isSubmitting ? "Submitting..." : "Submit"}
     </button>

@@ -12,7 +12,12 @@ export default async function Home() {
   return (
     <main className="p-4 mt-20 max-w-lg mx-auto">
       <AddForm />
-      <TodoList todos={todos} />
+
+      {todos.length > 0 ? (
+        <TodoList todos={todos} />
+      ) : (
+        <p className="text-base mt-4">You don&apos;t have any todos yet.</p>
+      )}
     </main>
   );
 }
