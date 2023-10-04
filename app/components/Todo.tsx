@@ -23,7 +23,11 @@ const RemoveButton = () => {
   const { pending } = useFormStatus();
   return (
     <button type="submit">
-      <Icon className="text-red-500 " size={18} name={pending ? "loader" : "trash-2"} />
+      <Icon
+        className={twMerge("text-red-500 ", pending && " animate-spin")}
+        size={18}
+        name={pending ? "loader" : "trash-2"}
+      />
     </button>
   );
 };
