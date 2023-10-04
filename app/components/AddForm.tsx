@@ -18,6 +18,7 @@ const SubmitButton = () => {
   const {
     formState: { isSubmitting },
   } = useFormContext();
+  console.log({ isSubmitting });
   return (
     <button
       disabled={isSubmitting}
