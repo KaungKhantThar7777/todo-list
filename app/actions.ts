@@ -1,13 +1,11 @@
 "use server";
 import { prisma } from "@/utils/db";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 
-import { TodoForm } from "./types";
-import { addFormSchema } from "./schema";
+import { TodoForm, ToggleTodo } from "./types";
+import { addFormSchema, toggleTodoSchema } from "./schema";
 
 export async function createTodo(prevState: any, formData: TodoForm) {
-  console.log({ formData }, "from here");
   addFormSchema.parse(formData);
 
   try {
@@ -20,6 +18,31 @@ export async function createTodo(prevState: any, formData: TodoForm) {
   } catch (error) {
     return {
       message: "Failed to create todo",
+    };
+  }
+}
+
+export async function toggleTodo(prevState: any, data: ToggleTodo) {
+  console.log({ data });
+  toggleTodoSchema.parse(data);
+
+  try {
+    const todo = await prisma.todo.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        done: data.done,
+      },
+    });
+
+    revalidatePath("/");
+    return {
+      message: `Toggled todo ${todo.id}`,
+    };
+  } catch (error) {
+    return {
+      message: "Failed to toggle todo.",
     };
   }
 }
